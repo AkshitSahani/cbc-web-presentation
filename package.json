@@ -9,7 +9,9 @@
     "react-scripts": "2.1.8",
     "react-spinners": "^0.5.3",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "xml-js": "^1.6.11",
+    "xml2js": "^0.4.19"
   },
   "scripts": {
     "start": "react-scripts start",

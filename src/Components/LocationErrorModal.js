@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal';
-
+ReactModal.setAppElement('#root');
 
 const LocationErrorModal = (props) => {
   return (
@@ -27,6 +27,12 @@ const LocationErrorModal = (props) => {
 
 export default LocationErrorModal;
 
+const renderLink = (link, text) => (
+  <a target="_blank" rel="noopener noreferrer" href={link}>
+    {text}
+  </a>
+);
+
 const renderError = (error) => {
   // console.log('in error func');
   let response;
@@ -39,17 +45,20 @@ const renderError = (error) => {
         settings and reload the page. Here are some links to help you:
         <br/><br/>
 
-        <a target="_blank" href="https://www.wikihow.com/Enable-Location-Services-on-Google-Chrome">Chrome</a>
+        {renderLink("https://www.wikihow.com/Enable-Location-Services-on-Google-Chrome", 'Chrome')}<br/><br/>
 
-        <br/><br/>
+        {/* <a target="_blank" href="https://www.wikihow.com/Enable-Location-Services-on-Google-Chrome">Chrome</a> */}
 
-        <a target="_blank" href="https://support.apple.com/en-ca/HT204690">Safari</a>
+        {renderLink('https://support.apple.com/en-ca/HT204690', 'Safari')}<br/><br/>
 
-        <br/><br/>
 
-        <a target="_blank" href="https://support.mozilla.org/en-US/kb/permissions-manager-give-ability-store-passwords-set-cookies-more?redirectlocale=en-US&redirectslug=how-do-i-manage-website-permissions">Firefox</a>
+        {/* <a target="_blank" href="https://support.apple.com/en-ca/HT204690">Safari</a> */}
+        {renderLink('https://support.mozilla.org/en-US/kb/permissions-manager-give-ability-store-passwords-set-cookies-more?redirectlocale=en-US&redirectslug=how-do-i-manage-website-permissions', 'Firefox')}<br/><br/>
 
-        <br/><br/>
+
+        {/* <a target="_blank" href="https://support.mozilla.org/en-US/kb/permissions-manager-give-ability-store-passwords-set-cookies-more?redirectlocale=en-US&redirectslug=how-do-i-manage-website-permissions">Firefox</a> */}
+
+        {/* <br/><br/> */}
 
         Alternatively, you can also close this modal, and enter your location manually to get weather forecasts.
       </p>
@@ -62,11 +71,15 @@ const renderError = (error) => {
         It is also possible that the location services on your device are disabled.
         Here are some links to help you enable location services on your device: <br/><br/>
 
-        <a target="_blank" href="https://support.apple.com/en-ca/HT204690">Mac</a><br/><br/>
+        {renderLink('https://support.apple.com/en-ca/HT204690', 'Mac')}<br/><br/>
 
-        <a target="_blank" href="https://support.microsoft.com/en-us/help/4468240/windows-10-location-service-and-privacy-microsoft-privacy">Windows</a><br/><br/>
+        {/* <a target="_blank" href="https://support.apple.com/en-ca/HT204690">Mac</a><br/><br/> */}
+        {renderLink('https://support.microsoft.com/en-us/help/4468240/windows-10-location-service-and-privacy-microsoft-privacy', 'Windows')}<br/><br/>
 
-        <a target="_blank" href="https://help.ubuntu.com/stable/ubuntu-help/privacy-location.html.en">Linux</a><br/><br/>
+        {/* <a target="_blank" href="https://support.microsoft.com/en-us/help/4468240/windows-10-location-service-and-privacy-microsoft-privacy">Windows</a><br/><br/> */}
+        {renderLink('https://help.ubuntu.com/stable/ubuntu-help/privacy-location.html.en', 'Linux')}<br/><br/>
+
+        {/* <a target="_blank" href="https://help.ubuntu.com/stable/ubuntu-help/privacy-location.html.en">Linux</a><br/><br/> */}
 
         Alternatively, you can also close this modal, and enter your location manually to get weather forecasts.
       </p>

@@ -11,12 +11,15 @@ import {xmlToJson} from '../Functions/common';
 // import Temperature from '../Components/Temperature';
 import LocationErrorModal from '../Components/LocationErrorModal';
 import CurrentWeather from '../Components/CurrentWeather';
+import ForecastCollection from '../Components/ForecastCollection';
 // import logo from '../../public/assets/cbc.png';
 
 const locationOptions = {
   enableHighAccuracy: true,
   timeout: 10000,
 };
+
+const dateToday = (new Date()).getDate();
 
 //api request options
 const format = 'xml';
@@ -45,7 +48,7 @@ class Weather extends Component {
     }
     else{
       console.log('gelocation is not supported by this browser!!');
-      this.setState({locationError: 'Unfortunately, gelocation is not supported by this browser. Please input your location manually', showModal: true,});
+      this.setState({browserError: 'Unfortunately, gelocation is not supported by this browser. You could try with another browser'});
     }
   }
 
@@ -92,11 +95,11 @@ class Weather extends Component {
       }
 
       const {latitude, longitude} = this.state;
-      // let key = ;
+      let key = type.toLowerCase();
       // console.log('key!!!!!', key);
       try{
         // const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
-        const url = `https://api.openweathermap.org/data/2.5/${type.toLowerCase()}?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
+        const url = `https://api.openweathermap.org/data/2.5/${key}?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
         // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
         const response = await fetch(url);
         // console.log('resp from fetch Data', response.json());
@@ -119,7 +122,8 @@ class Weather extends Component {
         else{
           data = [];
           jsonResp.weatherdata.forecast.time.forEach((d) => {
-            if(d.from.indexOf('T18:00:00') !== -1){
+            let dateFromData = (new Date(`${d.from}.000Z`)).getDate();
+            if(d.from.indexOf('T18:00:00') !== -1 && dateFromData !== dateToday){
               console.log('instance I need', d);
               data.push(d);
             }
@@ -127,7 +131,8 @@ class Weather extends Component {
         }
         console.log('data', data);
         this.props.setWeatherData(type, data);
-        this.setState({loading: false, dataLoaded: true});
+        this.setState({loading: false, [`${key}DataLoaded`]: true});
+        // this.setState({loading: false, dataLoaded: true});
         console.log('jsonResp', jsonResp);
 
         // return fetch(url)
@@ -144,14 +149,14 @@ class Weather extends Component {
     }
   }
 
-  fullLocalDate = (date) => (new Date(`${date}.000Z`)).toDateString() + ' ' + (new Date(`${date}.000Z`)).toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric'});
+  fullLocalDate = (date) => (new Date(`${date}.000Z`)).toDateString() + ' at ' + (new Date(`${date}.000Z`)).toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric'});
 
   render(){
     console.log('data in reducer', this.props.forecast);
     return (
       <div>
 
-        <img src={require("../assets/cbc.png")} height="60" width="60"/>
+        <img src={require("../assets/cbc.png")} height="75" width="75"/>
         <h1>
           Welcome to the CBC Weather Forecaster
         </h1>
@@ -162,14 +167,25 @@ class Weather extends Component {
         />
 
         {
-          this.state.dataLoaded &&
-          <div className="location">
-            Your location: {`${this.props.city.name}, ${this.props.city.country}`}
+          this.state.weatherDataLoaded &&
+          <div className="refresh-container">
+            <h2>
+            {/* <div className="location"> */}
+              {`${this.props.city.name}, ${this.props.city.country}`}
+              {/* Your location: {`${this.props.city.name}, ${this.props.city.country}`} */}
+            </h2>
+
+            <button
+              onClick={this.fetchData}
+              className="refresh-btn"
+            >
+              Refresh
+            </button>
           </div>
         }
 
         {
-          this.state.dataLoaded &&
+          this.state.weatherDataLoaded &&
           <div className='current-conditions'>
             Current Conditions
             <span className="local-date">
@@ -178,12 +194,10 @@ class Weather extends Component {
           </div>
         }
 
-        {/* <button onClick={this.fetchData}>
-          REFRESH
-        </button> */}
+
 
         {
-          this.state.dataLoaded ?
+          this.state.weatherDataLoaded ?
             <CurrentWeather
               unit={this.state.unit}
               switchUnit={this.switchUnit}
@@ -193,7 +207,16 @@ class Weather extends Component {
         }
 
         {
-          this.state.locationError &&
+          this.state.forecastDataLoaded ?
+            <ForecastCollection
+
+            />
+          :
+          null
+        }
+
+        {
+          this.state.browserError &&
           <p className="error">
             {this.state.locationError}
           </p>

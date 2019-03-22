@@ -5,12 +5,12 @@ const WeatherImage = (props) => {
   return (
     <div className="weather-img-container">
       <img
-        src={`http://openweathermap.org/img/w/${props.weatherImage.icon}.png`}
+        src={`http://openweathermap.org/img/w/${props.forecastIcon ? props.forecastIcon : props.weatherImage.icon}.png`}
         className="weather-img"
         alt="forecast-img"
       />
       <span className="img-desc">
-        {props.weatherImage.value}
+        {props.forecastValue ? props.forecastValue : props.weatherImage.value}
       </span>
     </div>
   )

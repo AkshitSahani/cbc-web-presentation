@@ -4,17 +4,30 @@ import {connect} from 'react-redux';
 // var convert = require('xml-js');
 // var parseString = require('xml2js').parseString;
 import Spinner from '../Components/Spinner';
+import {xmlToJson} from '../Functions/common';
+import Elements from '../Components/Elements';
+import WeatherImage from '../Components/WeatherImage';
 
-const options = {
+const locationOptions = {
   enableHighAccuracy: true,
   timeout: 10000,
 };
+
+//api request options
+const format = 'xml';
+const units = 'metric';
+const apiKey = `${process.env.REACT_APP_WEATHER_API_KEY}`;
+// const requestOptions = {
+//   apiKey: `${process.env.REACT_APP_WEATHER_API_KEY}`,
+//
+// }
 
 class Weather extends Component {
 
   state = {
     data: null,
     loading: true,
+    dataLoaded: false,
   }
 
   // test = () => {
@@ -30,7 +43,7 @@ class Weather extends Component {
 
   getCurrentLocation = () => {
     if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(this.locationSuccess, this.locationFailure, options)
+      navigator.geolocation.getCurrentPosition(this.locationSuccess, this.locationFailure, locationOptions)
       //show modal with instructions to turn on location for website if user denies once!
     }
     else{
@@ -59,43 +72,7 @@ class Weather extends Component {
     return xml;
   }
 
-  xmlToJson = (xml) => {
-    // Create the return object
-  	var obj = {};
 
-  	if (xml.nodeType === 1) { // element
-  		// do attributes
-  		if (xml.attributes.length > 0) {
-  		// obj["@attributes"] = {};
-  			for (var j = 0; j < xml.attributes.length; j++) {
-  				var attribute = xml.attributes.item(j);
-          obj[attribute.nodeName] = attribute.nodeValue;
-  				// obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-  			}
-  		}
-  	} else if (xml.nodeType === 3) { // text
-  		obj = xml.nodeValue;
-  	}
-
-  	// do children
-  	if (xml.hasChildNodes()) {
-  		for(var i = 0; i < xml.childNodes.length; i++) {
-  			var item = xml.childNodes.item(i);
-  			var nodeName = item.nodeName;
-  			if (typeof(obj[nodeName]) == "undefined") {
-  				obj[nodeName] = this.xmlToJson(item);
-  			} else {
-  				if (typeof(obj[nodeName].push) == "undefined") {
-  					var old = obj[nodeName];
-  					obj[nodeName] = [];
-  					obj[nodeName].push(old);
-  				}
-  				obj[nodeName].push(this.xmlToJson(item));
-  			}
-  		}
-  	}
-  	return obj;
-  }
 
   // prompt(window, pref, message, callback) {
   //   let branch = Components.classes["@mozilla.org/preferences-service;1"]
@@ -164,7 +141,7 @@ class Weather extends Component {
 
     const {latitude, longitude} = this.state;
     try{
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=xml&APPID=ea4d580ff1e59a02c1837843ebdeccdc`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${units}`;
       // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&mode=xml&APPID=ea4d580ff1e59a02c1837843ebdeccdc`;
       const response = await fetch(url);
       // console.log('resp from fetch Data', response.json());
@@ -172,15 +149,15 @@ class Weather extends Component {
       console.log('xmlResp', xmlResp);
       // var xmlText = new XMLSerializer().serializeToString(xmlResp);
       // console.log('xmlText', xmlText);
-      const jsonResp = this.xmlToJson(xmlResp);
+      const jsonResp = xmlToJson(xmlResp);
       // var result1 = convert.xml2json(xmlText, {compact: true, spaces: 4});
       // console.log('result!!!!!!!', result1);
       // parseString(xmlText, (err, res) => {
       //   console.log('resp from parse string', res);
       //   console.log('finalllll', JSON.stringify(res))
       // });
-      this.props.setWeatherData(jsonResp);
-      this.setState({loading: false});
+      this.props.setWeatherData(jsonResp.current);
+      this.setState({loading: false, dataLoaded: true});
       console.log('jsonResp', jsonResp);
 
       // return fetch(url)
@@ -202,7 +179,7 @@ class Weather extends Component {
     return (
       <div>
         <h1>
-          Weather page!!!
+          Welcome to the CBC Weather!!!
         </h1>
 
         {/* <button onClick={this.test}> */}
@@ -214,6 +191,14 @@ class Weather extends Component {
         <Spinner
           loading={this.state.loading}
           // style={{alignSelf: 'center'}}
+        />
+
+        <Elements
+          load={this.state.dataLoaded}
+        />
+
+        <WeatherImage
+          load={this.state.dataLoaded}
         />
       </div>
     )

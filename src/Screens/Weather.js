@@ -9,6 +9,7 @@ import Elements from '../Components/Elements';
 import WeatherImage from '../Components/WeatherImage';
 import LocationDisplay from '../Components/LocationDisplay';
 import Temperature from '../Components/Temperature';
+import LocationErrorModal from '../Components/LocationErrorModal';
 
 const locationOptions = {
   enableHighAccuracy: true,
@@ -30,7 +31,8 @@ class Weather extends Component {
     data: null,
     loading: true,
     dataLoaded: false,
-    unit: 'metric'
+    unit: 'metric',
+    showModal: true,
   }
 
   // test = () => {
@@ -43,6 +45,8 @@ class Weather extends Component {
   componentDidMount(){
     this.getCurrentLocation();
   }
+
+  closeModal = () => this.setState({showModal: false});
 
   getCurrentLocation = () => {
     if(navigator.geolocation){
@@ -136,7 +140,6 @@ class Weather extends Component {
   //   }
 
   switchUnit = async(unit) => {
-    // let unit = this.state.unit === 'metric' ? 'imperial' : 'metric';
     if(this.state.unit !== unit){
       await this.setState({unit});
       this.fetchData();
@@ -233,6 +236,11 @@ class Weather extends Component {
 
         <WeatherImage
           load={this.state.dataLoaded}
+        />
+
+        <LocationErrorModal
+          showModal={this.state.showModal}
+          closeModal={this.closeModal}
         />
 
       </div>

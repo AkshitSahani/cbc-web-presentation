@@ -92,9 +92,7 @@ class Weather extends Component {
       const {latitude, longitude} = this.state;
       let key = type.toLowerCase();
       try{
-        // const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
         const url = `https://api.openweathermap.org/data/2.5/${key}?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
-        // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
         const response = await fetch(url);
         // console.log('resp from fetch Data', response.json());
         const xmlResp = await this.processResponse(response);
@@ -114,10 +112,10 @@ class Weather extends Component {
             }
           });
         }
-        console.log('data', data);
+        // console.log('jsonResp', jsonResp);
+        // console.log('data', data);
         this.props.setWeatherData(type, data);
         this.setState({loading: false, [`${key}DataLoaded`]: true});
-        console.log('jsonResp', jsonResp);
       }
       catch(e){
         console.log('error in fetching data', e);

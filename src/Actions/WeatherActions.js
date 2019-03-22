@@ -1,1 +1,1 @@
-export const setWeatherData = (data) => ({type: 'setWeatherData', data});
+export const setWeatherData = (key, data) => ({type: `set${key}Data`, data});

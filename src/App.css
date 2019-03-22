@@ -1,6 +1,7 @@
 .App {
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+  padding: 20px;
 }
 
 .elements-container{
@@ -55,6 +56,7 @@
   /* height: 50%; */
   display: flex;
   padding: 10px;
+  padding-bottom: 20px;
   flex-direction: column;
   align-items: center;
   border: 1px solid green;
@@ -113,6 +115,7 @@
   align-items: flex-end;
   font-weight: bold;
   font-size: 20px;
+  padding-bottom: 3px;
 }
 
 .location{
@@ -141,6 +144,15 @@
 .max{
   padding-left: 15px;
   padding-right: 10px;
+}
+
+.cancel{
+  align-self: flex-end;
+  /* margin-bottom: 1px; */
+}
+
+.cancel:hover{
+  cursor: pointer;
 }
 
 /* .weather-right-top{

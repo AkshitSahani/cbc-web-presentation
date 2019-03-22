@@ -11,6 +11,7 @@ import {xmlToJson} from '../Functions/common';
 // import Temperature from '../Components/Temperature';
 import LocationErrorModal from '../Components/LocationErrorModal';
 import CurrentWeather from '../Components/CurrentWeather';
+// import logo from '../../public/assets/cbc.png';
 
 const locationOptions = {
   enableHighAccuracy: true,
@@ -53,12 +54,15 @@ class Weather extends Component {
     const {latitude, longitude} = position.coords;
     console.log('lat', latitude, 'lng', longitude);
     this.setState({latitude, longitude});
-    this.fetchData(latitude, longitude);
+    this.fetchData('Weather');
+    this.fetchData('Forecast');
   }
 
-  locationFailure = ({message}) => {
-    console.log('in failure function', message);
-    this.setState({loading: false, locationError: message, showModal: true});
+  locationFailure = (error) => {
+  // locationFailure = ({message}) => {
+    console.log('in failure function', error, error.message);
+    this.setState({loading: false, locationError: error.code, showModal: true});
+    // this.setState({loading: false, locationError: message, showModal: true});
   }
 
   processResponse = async(response) => {
@@ -72,22 +76,28 @@ class Weather extends Component {
   switchUnit = async(unit) => {
     if(this.state.unit !== unit){
       await this.setState({unit});
-      this.fetchData();
+      this.fetchData('Weather');
+      this.fetchData('Forecast');
     }
   }
 
-  fetchData = async() => {
+  fetchData = async(type) => {
   // fetchData = async(lat, lon) => {
     // console.log('in fetch data func', lat, lon);
+    // console.log('inside func', type);
     if(!this.state.locationError){
+      // console.log('inside condition', type);
       if(!this.state.loading){
         this.setState({loading: true});
       }
 
       const {latitude, longitude} = this.state;
+      // let key = ;
+      // console.log('key!!!!!', key);
       try{
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
-        // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&mode=xml&APPID=ea4d580ff1e59a02c1837843ebdeccdc`;
+        // const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
+        const url = `https://api.openweathermap.org/data/2.5/${type.toLowerCase()}?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
+        // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
         const response = await fetch(url);
         // console.log('resp from fetch Data', response.json());
         const xmlResp = await this.processResponse(response);
@@ -101,7 +111,22 @@ class Weather extends Component {
         //   console.log('resp from parse string', res);
         //   console.log('finalllll', JSON.stringify(res))
         // });
-        this.props.setWeatherData(jsonResp.current);
+        let data;
+        // = type === 'Weather' ? jsonResp.current : jsonResp.weatherdata.forecast;
+        if(type === 'Weather'){
+          data = jsonResp.current;
+        }
+        else{
+          data = [];
+          jsonResp.weatherdata.forecast.time.forEach((d) => {
+            if(d.from.indexOf('T18:00:00') !== -1){
+              console.log('instance I need', d);
+              data.push(d);
+            }
+          });
+        }
+        console.log('data', data);
+        this.props.setWeatherData(type, data);
         this.setState({loading: false, dataLoaded: true});
         console.log('jsonResp', jsonResp);
 
@@ -119,21 +144,27 @@ class Weather extends Component {
     }
   }
 
-  fullLocalDate = (date) => (new Date(`${date}.000Z`)).toDateString() + ' ' + (new Date(`${date}.000Z`)).toLocaleTimeString();
-
+  fullLocalDate = (date) => (new Date(`${date}.000Z`)).toDateString() + ' ' + (new Date(`${date}.000Z`)).toLocaleTimeString('en-US', {hour: 'numeric', minute: 'numeric'});
 
   render(){
-    console.log('data in reducer', this.props.data);
+    console.log('data in reducer', this.props.forecast);
     return (
       <div>
+
+        <img src={require("../assets/cbc.png")} height="60" width="60"/>
         <h1>
-          Welcome to the CBC Weather!!!
+          Welcome to the CBC Weather Forecaster
         </h1>
+
+        <Spinner
+          loading={this.state.loading}
+          // style={{alignSelf: 'center'}}
+        />
 
         {
           this.state.dataLoaded &&
           <div className="location">
-            {`${this.props.city.name}, ${this.props.city.country}`}
+            Your location: {`${this.props.city.name}, ${this.props.city.country}`}
           </div>
         }
 
@@ -142,42 +173,30 @@ class Weather extends Component {
           <div className='current-conditions'>
             Current Conditions
             <span className="local-date">
-              {this.fullLocalDate(this.props.city.lastUpdate)}
+              as of {this.fullLocalDate(this.props.city.lastUpdate)}
             </span>
           </div>
         }
 
-
-
-        <button onClick={this.fetchData}>
+        {/* <button onClick={this.fetchData}>
           REFRESH
-        </button>
+        </button> */}
 
-        {/* <Temperature
-          load={this.state.dataLoaded}
-        /> */}
-
-        <Spinner
-          loading={this.state.loading}
-          // style={{alignSelf: 'center'}}
-        />
-
-        {/* <Elements
-          load={this.state.dataLoaded}
-        />
-
-        <WeatherImage
-          load={this.state.dataLoaded}
-        /> */}
         {
           this.state.dataLoaded ?
             <CurrentWeather
-              // load={true}
               unit={this.state.unit}
               switchUnit={this.switchUnit}
             />
           :
           null
+        }
+
+        {
+          this.state.locationError &&
+          <p className="error">
+            {this.state.locationError}
+          </p>
         }
 
         <LocationErrorModal
@@ -193,8 +212,10 @@ class Weather extends Component {
 
 const mapStateToProps = (state) => {
   const {city} = state.weather;
+
   return {
-    city
+    city,
+    forecast: state.forecast
   }
 }
 

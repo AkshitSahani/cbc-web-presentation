@@ -7,9 +7,7 @@ import LocationDisplay from './LocationDisplay';
 const CurrentWeather = (props) => {
   return (
     <div className="weather-container">
-      {/* <div style={{alignSelf: 'flex-start'}}>
-        <LocationDisplay />
-      </div> */}
+
       <div className="unit-change">
         <button
           className="unit-button"

@@ -4,11 +4,19 @@ import {roundNum} from '../Functions/common';
 
 const Temperature = (props) => {
   return (
-    <div>
-      {props.load && <div>{`${roundNum(props.temperature.value)} ${props.temperature.unit === 'metric' ? '.C' : 'K'}`}</div>}
-      {props.load && <div>Max: {roundNum(props.temperature.max)}</div>}
-      {props.load && <div>Min: {roundNum(props.temperature.min)}</div>}
-      {props.load && <div>{props.temperature.name}</div>}
+    <div className="temp-container">
+      <span className="temp-main">
+        {roundNum(props.temperature.value)} &deg;{props.unit}
+      </span>
+      {/* <div> */}
+        <span className="temp max">
+          Max: {roundNum(props.temperature.max)} &deg;{props.unit}
+        </span>
+        <span className="temp min">
+          Min: {roundNum(props.temperature.min)} &deg;{props.unit}
+        </span>
+      {/* </div> */}
+      {/* {<div>{props.temperature.name}</div>} */}
     </div>
   )
 }
@@ -16,9 +24,11 @@ const Temperature = (props) => {
 const mapStateToProps = (state) => {
   const {temperature} = state.weather;
   console.log('temp in temperature comp', temperature);
+  const unit = temperature.unit === 'metric' ? 'C' : 'F';
   return {
-    temperature
+    temperature,
+    unit
   }
 }
 
-export default connect(mapStateToProps)(Temperature)
+export default connect(mapStateToProps)(Temperature);

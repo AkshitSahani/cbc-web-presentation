@@ -54,10 +54,7 @@ const WeatherReducer = (state = initialState, action) => {
             ...state.elements.pressure,
             ...pressure
           },
-          // sun: {
-            // ...state.elements.sun,
-            sunset: city.sun.set
-          // }
+          sunset: city.sun.set
         },
         temperature: {
           ...state.temperature,

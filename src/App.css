@@ -1,21 +1,152 @@
 .App {
   text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .elements-container{
-  border: 2px solid black;
+  border-top: 1px solid lightgrey;
+  padding-top: 5px;
+  margin-top: 5px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .element{
   width: 50%;
+  display: flex;
+  /* align-self: flex-start; */
+  /* border: 1px solid red; */
+  /* justify-content:  */
+  /* align-items: center; */
+  /* padding-left: 10px; */
+  /* padding-left: 20%; */
 }
 
-.weather-image{
+.element-heading, .bold{
+  font-weight: bold;
+}
+
+.element-details{
+  padding-left: 5px;
+}
+
+.weather-img-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.weather-img{
   height: 60px;
   width: 60px;
 }
+
+.img-desc{
+  font-weight: bolder;
+}
+
+.weather-container{
+  width: 50%;
+  /* height: 50%; */
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid green;
+}
+
+.unit-change{
+  display: flex;
+  align-self: flex-end;
+  width: 20%;
+  /* border: 1px solid red; */
+  justify-content: space-between;
+  align-items: center;
+}
+
+.unit-button{
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+  width: 50%;
+}
+
+.unit-button:hover{
+  cursor: pointer;
+}
+
+.weather-main{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.weather-left{
+  width: 20%;
+  /* border: 1px solid blue; */
+
+}
+
+.local-date{
+  padding-left: 5px;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.weather-right{
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.current-conditions{
+  display: flex;
+  align-items: flex-end;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.location{
+  padding: 20px 0px;
+  font-weight: 900;
+  font-size: 24px;
+}
+
+.temp-container{
+  /* border: 1px solid pink; */
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.temp-main{
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.temp{
+  font-size: 14px;
+}
+
+.max{
+  padding-left: 15px;
+  padding-right: 10px;
+}
+
+/* .weather-right-top{
+  width
+}
+
+.weather-right-bottom{
+
+} */

@@ -6,8 +6,7 @@ import {roundNum} from '../Functions/common';
 const Elements = (props) => {
   return(
     <div className='elements-container'>
-      {console.log('in elements body', props.load)}
-      {props.load && renderElements(props.elements)}
+      {renderElements(props.elements)}
     </div>
   )
 }
@@ -38,7 +37,7 @@ const renderElements = (elements) => {
       details = localTime(elements[key]);
     }
     else if(key === 'wind'){
-      details = `${elements[key].direction.code} ${elements[key].speed.value * 3.6} km/h`
+      details = `${elements[key].direction.code} ${roundNum(elements[key].speed.value * 3.6)} km/h`
     }
     else{
       let {unit, value} = elements[key];

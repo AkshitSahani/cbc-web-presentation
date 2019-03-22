@@ -3,17 +3,15 @@ import {connect} from 'react-redux';
 
 const WeatherImage = (props) => {
   return (
-    <div>
-      {
-        props.load &&
-        <img
-          src={`http://openweathermap.org/img/w/${props.weatherImage.icon}.png`}
-          className="weather-image"
-        />
-      }
-      {/* <span>
-        {props.weatherImage.}
-      </span> */}
+    <div className="weather-img-container">
+      <img
+        src={`http://openweathermap.org/img/w/${props.weatherImage.icon}.png`}
+        className="weather-img"
+        alt="forecast-img"
+      />
+      <span className="img-desc">
+        {props.weatherImage.value}
+      </span>
     </div>
   )
 }

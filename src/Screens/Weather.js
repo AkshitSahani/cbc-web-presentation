@@ -5,11 +5,12 @@ import {connect} from 'react-redux';
 // var parseString = require('xml2js').parseString;
 import Spinner from '../Components/Spinner';
 import {xmlToJson} from '../Functions/common';
-import Elements from '../Components/Elements';
-import WeatherImage from '../Components/WeatherImage';
-import LocationDisplay from '../Components/LocationDisplay';
-import Temperature from '../Components/Temperature';
+// import Elements from '../Components/Elements';
+// import WeatherImage from '../Components/WeatherImage';
+// import LocationDisplay from '../Components/LocationDisplay';
+// import Temperature from '../Components/Temperature';
 import LocationErrorModal from '../Components/LocationErrorModal';
+import CurrentWeather from '../Components/CurrentWeather';
 
 const locationOptions = {
   enableHighAccuracy: true,
@@ -18,12 +19,7 @@ const locationOptions = {
 
 //api request options
 const format = 'xml';
-// const units = 'metric';
 const apiKey = `${process.env.REACT_APP_WEATHER_API_KEY}`;
-// const requestOptions = {
-//   apiKey: `${process.env.REACT_APP_WEATHER_API_KEY}`,
-//
-// }
 
 class Weather extends Component {
 
@@ -32,15 +28,8 @@ class Weather extends Component {
     loading: true,
     dataLoaded: false,
     unit: 'metric',
-    showModal: true,
+    showModal: false,
   }
-
-  // test = () => {
-  //   prompt(window,
-  //          "extensions.foo-addon.allowGeolocation",
-  //          "Foo Add-on wants to know your location.",
-  //          function callback(allowed) { alert(allowed); });
-  // }
 
   componentDidMount(){
     this.getCurrentLocation();
@@ -55,6 +44,7 @@ class Weather extends Component {
     }
     else{
       console.log('gelocation is not supported by this browser!!');
+      this.setState({locationError: 'Unfortunately, gelocation is not supported by this browser. Please input your location manually', showModal: true,});
     }
   }
 
@@ -66,9 +56,9 @@ class Weather extends Component {
     this.fetchData(latitude, longitude);
   }
 
-  locationFailure = (error) => {
-    console.log('in failure function', error);
-    this.setState({loading: false, error});
+  locationFailure = ({message}) => {
+    console.log('in failure function', message);
+    this.setState({loading: false, locationError: message, showModal: true});
   }
 
   processResponse = async(response) => {
@@ -78,66 +68,6 @@ class Weather extends Component {
     // console.log('processed Response', xml);
     return xml;
   }
-
-
-
-  // prompt(window, pref, message, callback) {
-  //   let branch = Components.classes["@mozilla.org/preferences-service;1"]
-  //                          .getService(Components.interfaces.nsIPrefBranch);
-  //
-  //   if (branch.getPrefType(pref) === branch.PREF_STRING) {
-  //       switch (branch.getCharPref(pref)) {
-  //       case "always":
-  //           return callback(true);
-  //       case "never":
-  //           return callback(false);
-  //       }
-  //   }
-  //
-  //   let done = false;
-  //
-  //   function remember(value, result) {
-  //       return function() {
-  //           done = true;
-  //           branch.setCharPref(pref, value);
-  //           callback(result);
-  //       }
-  //   }
-  //
-  //   let self = window.PopupNotifications.show(
-  //       window.gBrowser.selectedBrowser,
-  //       "geolocation",
-  //       message,
-  //       "geo-notification-icon",
-  //       {
-  //           label: "Share Location",
-  //           accessKey: "S",
-  //           callback: function(notification) {
-  //               done = true;
-  //               callback(true);
-  //           }
-  //       }, [
-  //           {
-  //               label: "Always Share",
-  //               accessKey: "A",
-  //               callback: remember("always", true)
-  //           },
-  //           {
-  //               label: "Never Share",
-  //               accessKey: "N",
-  //               callback: remember("never", false)
-  //           }
-  //       ], {
-  //           eventCallback: function(event) {
-  //               if (event === "dismissed") {
-  //                   if (!done) callback(false);
-  //                   done = true;
-  //                   window.PopupNotifications.remove(self);
-  //               }
-  //           },
-  //           persistWhileVisible: true
-  //       });
-  //   }
 
   switchUnit = async(unit) => {
     if(this.state.unit !== unit){
@@ -149,43 +79,47 @@ class Weather extends Component {
   fetchData = async() => {
   // fetchData = async(lat, lon) => {
     // console.log('in fetch data func', lat, lon);
-    if(!this.state.loading){
-      this.setState({loading: true});
-    }
+    if(!this.state.locationError){
+      if(!this.state.loading){
+        this.setState({loading: true});
+      }
 
-    const {latitude, longitude} = this.state;
-    try{
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
-      // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&mode=xml&APPID=ea4d580ff1e59a02c1837843ebdeccdc`;
-      const response = await fetch(url);
-      // console.log('resp from fetch Data', response.json());
-      const xmlResp = await this.processResponse(response);
-      console.log('xmlResp', xmlResp);
-      // var xmlText = new XMLSerializer().serializeToString(xmlResp);
-      // console.log('xmlText', xmlText);
-      const jsonResp = xmlToJson(xmlResp);
-      // var result1 = convert.xml2json(xmlText, {compact: true, spaces: 4});
-      // console.log('result!!!!!!!', result1);
-      // parseString(xmlText, (err, res) => {
-      //   console.log('resp from parse string', res);
-      //   console.log('finalllll', JSON.stringify(res))
-      // });
-      this.props.setWeatherData(jsonResp.current);
-      this.setState({loading: false, dataLoaded: true});
-      console.log('jsonResp', jsonResp);
+      const {latitude, longitude} = this.state;
+      try{
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
+        // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&mode=xml&APPID=ea4d580ff1e59a02c1837843ebdeccdc`;
+        const response = await fetch(url);
+        // console.log('resp from fetch Data', response.json());
+        const xmlResp = await this.processResponse(response);
+        console.log('xmlResp', xmlResp);
+        // var xmlText = new XMLSerializer().serializeToString(xmlResp);
+        // console.log('xmlText', xmlText);
+        const jsonResp = xmlToJson(xmlResp);
+        // var result1 = convert.xml2json(xmlText, {compact: true, spaces: 4});
+        // console.log('result!!!!!!!', result1);
+        // parseString(xmlText, (err, res) => {
+        //   console.log('resp from parse string', res);
+        //   console.log('finalllll', JSON.stringify(res))
+        // });
+        this.props.setWeatherData(jsonResp.current);
+        this.setState({loading: false, dataLoaded: true});
+        console.log('jsonResp', jsonResp);
 
-      // return fetch(url)
-      //   .then(response => response.text())
-      //   .then(str => (new DOMParser()).parseFromString(str, "application/xml"))
-      //   .then(data => console.log(data))
-      //   .catch(e=>console.log('error', e))
-    }
-    catch(e){
-      console.log('error in fetching data', e);
-      console.log('full error', e.response);
-      this.setState({loading: false});
+        // return fetch(url)
+        //   .then(response => response.text())
+        //   .then(str => (new DOMParser()).parseFromString(str, "application/xml"))
+        //   .then(data => console.log(data))
+        //   .catch(e=>console.log('error', e))
+      }
+      catch(e){
+        console.log('error in fetching data', e);
+        console.log('full error', e.response);
+        this.setState({loading: false});
+      }
     }
   }
+
+  fullLocalDate = (date) => (new Date(`${date}.000Z`)).toDateString() + ' ' + (new Date(`${date}.000Z`)).toLocaleTimeString();
 
 
   render(){
@@ -196,51 +130,60 @@ class Weather extends Component {
           Welcome to the CBC Weather!!!
         </h1>
 
-        {/* <button onClick={this.test}> */}
-        {/* <button onClick={this.getCurrentLocation}> */}
+        {
+          this.state.dataLoaded &&
+          <div className="location">
+            {`${this.props.city.name}, ${this.props.city.country}`}
+          </div>
+        }
 
-        <LocationDisplay
-          load={this.state.dataLoaded}
-        />
+        {
+          this.state.dataLoaded &&
+          <div className='current-conditions'>
+            Current Conditions
+            <span className="local-date">
+              {this.fullLocalDate(this.props.city.lastUpdate)}
+            </span>
+          </div>
+        }
 
-        <button
-          style={{color: this.state.unit === 'metric' ? 'red' : 'black'}}
-          onClick={() => this.switchUnit('imperial')}
-        >
-          K
-        </button>
 
-        <button
-          style={{color: this.state.unit === 'metric' ? 'black' : 'red'}}
-          onClick={() => this.switchUnit('metric')}
-        >
-          C
-        </button>
 
         <button onClick={this.fetchData}>
           REFRESH
         </button>
 
-        <Temperature
+        {/* <Temperature
           load={this.state.dataLoaded}
-        />
+        /> */}
 
         <Spinner
           loading={this.state.loading}
           // style={{alignSelf: 'center'}}
         />
 
-        <Elements
+        {/* <Elements
           load={this.state.dataLoaded}
         />
 
         <WeatherImage
           load={this.state.dataLoaded}
-        />
+        /> */}
+        {
+          this.state.dataLoaded ?
+            <CurrentWeather
+              // load={true}
+              unit={this.state.unit}
+              switchUnit={this.switchUnit}
+            />
+          :
+          null
+        }
 
         <LocationErrorModal
           showModal={this.state.showModal}
           closeModal={this.closeModal}
+          error={this.state.locationError}
         />
 
       </div>
@@ -249,8 +192,9 @@ class Weather extends Component {
 }
 
 const mapStateToProps = (state) => {
+  const {city} = state.weather;
   return {
-    data: state.weather,
+    city
   }
 }
 

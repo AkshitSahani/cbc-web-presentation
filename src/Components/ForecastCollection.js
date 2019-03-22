@@ -29,9 +29,12 @@ class ForecastCollection extends Component {
   render() {
     return (
       <div className="forecasts-container">
-        <h2>
+        <span
+          className="current-conditions"
+          style={{marginTop: 30, marginBottom: 3}}
+        >
           Extended Forecast
-        </h2>
+        </span>
         <div className="forecast-all">
           {this.renderForecasts()}
         </div>

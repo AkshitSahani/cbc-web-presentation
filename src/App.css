@@ -2,6 +2,19 @@
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding-left: 10%; */
+  /* padding-right: 10%; */
+  width: 80%;
 }
 
 .elements-container{
@@ -47,28 +60,37 @@
   width: 60px;
 }
 
+.forecast-top{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .img-desc{
   font-weight: bolder;
 }
 
 .weather-container{
-  width: 70%;
-  /* height: 50%; */
+  width: 98%;
+  height: 150px;
   display: flex;
   padding: 10px;
   padding-bottom: 20px;
   flex-direction: column;
   align-items: center;
-  border: 1px solid green;
+  background-color: #EFEFEF;
+  justify-content: center;
 }
 
 .unit-change{
   display: flex;
   align-self: flex-end;
   width: 20%;
-  /* border: 1px solid red; */
+  border: 1px solid white;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
+  border-radius: 4px;
 }
 
 .unit-button{
@@ -92,8 +114,10 @@
 
 .weather-left{
   width: 20%;
-  /* border: 1px solid blue; */
-
+  border: 1px solid white;
+  background-color: white;
+  padding-bottom: 10px;
+  border-radius: 5px;
 }
 
 .local-date{
@@ -116,6 +140,7 @@
   font-weight: bold;
   font-size: 20px;
   padding-bottom: 3px;
+  width: 100%;
 }
 
 .location{
@@ -173,7 +198,18 @@
   justify-content: space-around;
   background-color: #EFEFEF;
   padding: 15px;
-  width: 70%;
+  width: 97%;
+}
+
+.forecasts-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ext-forecast{
+  align-self: flex-start;
 }
 
 .error {
@@ -183,22 +219,14 @@
 }
 
 .refresh-container {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-/* .refresh{
-  border-radius: 5px;
-
-} */
 .refresh-btn {
-  /* background-color: #E60505; */
-  /* margin-right: 20px; */
-  /* padding: 10px; */
-  /* color: white; */
   color: #115278;
-  /* border-radius: 5px; */
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;
@@ -206,11 +234,8 @@
 }
 
 .refresh-btn:hover {
-  /* background-color: white; */
-  /* color: #E60505; */
   background-color: #115278;
   color: white;
-  /* border: 1px solid #E60505; */
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;

@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Elements from './Elements';
 import WeatherImage from './WeatherImage';
 import Temperature from './Temperature';
-import LocationDisplay from './LocationDisplay';
 
 const CurrentWeather = (props) => {
   return (

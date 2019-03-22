@@ -52,13 +52,24 @@ class Weather extends Component {
     }
   }
 
+  refreshData = () => {
+    this.fetchData('Weather');
+    this.fetchData('Forecast');
+  }
+
   locationSuccess = (position) => {
     console.log('in success function', position);
     const {latitude, longitude} = position.coords;
     console.log('lat', latitude, 'lng', longitude);
     this.setState({latitude, longitude});
-    this.fetchData('Weather');
-    this.fetchData('Forecast');
+    // Promise.all([this.fetchData('Weather'), this.fetchData('Forecast')])
+    //   .then((values) => {
+    //     console.log('PROMISE.ALL VALUES!!!', values);
+    //     this.setState({dataLoaded: true});
+    //   })
+    // this.fetchData('Weather');
+    // this.fetchData('Forecast');
+    this.refreshData();
   }
 
   locationFailure = (error) => {
@@ -79,8 +90,9 @@ class Weather extends Component {
   switchUnit = async(unit) => {
     if(this.state.unit !== unit){
       await this.setState({unit});
-      this.fetchData('Weather');
-      this.fetchData('Forecast');
+      this.refreshData();
+      // this.fetchData('Weather');
+      // this.fetchData('Forecast');
     }
   }
 
@@ -154,9 +166,15 @@ class Weather extends Component {
   render(){
     console.log('data in reducer', this.props.forecast);
     return (
-      <div>
+      <div className="content-container">
 
-        <img src={require("../assets/cbc.png")} height="75" width="75"/>
+        <img
+          src={require("../assets/cbc.png")}
+          height="75"
+          width="75"
+          alt="cbc logo"
+        />
+
         <h1>
           Welcome to the CBC Weather Forecaster
         </h1>
@@ -176,7 +194,7 @@ class Weather extends Component {
             </h2>
 
             <button
-              onClick={this.fetchData}
+              onClick={this.refreshData}
               className="refresh-btn"
             >
               Refresh
@@ -187,7 +205,7 @@ class Weather extends Component {
         {
           this.state.weatherDataLoaded &&
           <div className='current-conditions'>
-            Current Conditions
+            <span>Current Conditions</span>
             <span className="local-date">
               as of {this.fullLocalDate(this.props.city.lastUpdate)}
             </span>

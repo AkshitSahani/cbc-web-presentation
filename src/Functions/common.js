@@ -38,3 +38,5 @@ export const xmlToJson = (xml) => {
   }
   return obj;
 }
+
+export const roundNum = (num) => (num/1).toFixed(1); // divide by 1 so that it becomes number and toFixed can be called on it.

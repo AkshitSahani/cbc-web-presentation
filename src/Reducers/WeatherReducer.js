@@ -20,8 +20,8 @@ const WeatherReducer = (state = initialState, action) => {
       console.log('in setWeatherData in reducer', data);
       const {humidity, pressure, visibility, wind, city, temperature, clouds, weather, lastupdate} = data;
       // const
-      console.log(humidity, pressure, visibility, wind, city, temperature, clouds, weather, lastupdate);
-      console.log('initialState', initialState);
+      // console.log(humidity, pressure, visibility, wind, city, temperature, clouds, weather, lastupdate);
+      // console.log('initialState', initialState);
       return {
         ...state,
         elements: {

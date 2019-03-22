@@ -7,6 +7,8 @@ import Spinner from '../Components/Spinner';
 import {xmlToJson} from '../Functions/common';
 import Elements from '../Components/Elements';
 import WeatherImage from '../Components/WeatherImage';
+import LocationDisplay from '../Components/LocationDisplay';
+import Temperature from '../Components/Temperature';
 
 const locationOptions = {
   enableHighAccuracy: true,
@@ -15,7 +17,7 @@ const locationOptions = {
 
 //api request options
 const format = 'xml';
-const units = 'metric';
+// const units = 'metric';
 const apiKey = `${process.env.REACT_APP_WEATHER_API_KEY}`;
 // const requestOptions = {
 //   apiKey: `${process.env.REACT_APP_WEATHER_API_KEY}`,
@@ -28,6 +30,7 @@ class Weather extends Component {
     data: null,
     loading: true,
     dataLoaded: false,
+    unit: 'metric'
   }
 
   // test = () => {
@@ -132,6 +135,14 @@ class Weather extends Component {
   //       });
   //   }
 
+  switchUnit = async(unit) => {
+    // let unit = this.state.unit === 'metric' ? 'imperial' : 'metric';
+    if(this.state.unit !== unit){
+      await this.setState({unit});
+      this.fetchData();
+    }
+  }
+
   fetchData = async() => {
   // fetchData = async(lat, lon) => {
     // console.log('in fetch data func', lat, lon);
@@ -141,7 +152,7 @@ class Weather extends Component {
 
     const {latitude, longitude} = this.state;
     try{
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${units}`;
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
       // const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&mode=xml&APPID=ea4d580ff1e59a02c1837843ebdeccdc`;
       const response = await fetch(url);
       // console.log('resp from fetch Data', response.json());
@@ -184,9 +195,32 @@ class Weather extends Component {
 
         {/* <button onClick={this.test}> */}
         {/* <button onClick={this.getCurrentLocation}> */}
+
+        <LocationDisplay
+          load={this.state.dataLoaded}
+        />
+
+        <button
+          style={{color: this.state.unit === 'metric' ? 'red' : 'black'}}
+          onClick={() => this.switchUnit('imperial')}
+        >
+          K
+        </button>
+
+        <button
+          style={{color: this.state.unit === 'metric' ? 'black' : 'red'}}
+          onClick={() => this.switchUnit('metric')}
+        >
+          C
+        </button>
+
         <button onClick={this.fetchData}>
           REFRESH
         </button>
+
+        <Temperature
+          load={this.state.dataLoaded}
+        />
 
         <Spinner
           loading={this.state.loading}
@@ -200,6 +234,7 @@ class Weather extends Component {
         <WeatherImage
           load={this.state.dataLoaded}
         />
+
       </div>
     )
   }

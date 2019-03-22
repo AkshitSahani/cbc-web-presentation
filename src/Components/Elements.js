@@ -1,6 +1,7 @@
 import React from 'react';
 import Element from './Element';
 import {connect} from 'react-redux';
+import {roundNum} from '../Functions/common';
 
 const Elements = (props) => {
   return(
@@ -42,10 +43,10 @@ const renderElements = (elements) => {
     else{
       let {unit, value} = elements[key];
       if(key === 'pressure'){
-        value = (value/10).toFixed(1);
+        value = roundNum(value/10);
         unit = 'kPa';
       }
-      details = unit ? `${value} ${unit}` : `${(value/1000).toFixed(1)} km`;
+      details = unit ? `${value} ${unit}` : `${roundNum(value/1000)} km`;
     }
     // console.log('keyname', key, 'details', details);
     result.push(

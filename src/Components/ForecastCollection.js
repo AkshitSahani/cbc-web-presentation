@@ -8,12 +8,12 @@ class ForecastCollection extends Component {
   getDate = (input) => (new Date(`${input}.000Z`)).toLocaleDateString('en-US', {day: 'numeric', weekday: 'long', month: 'long'})
 
   renderForecasts = () => {
-    console.log('in render forecasts function');
+    // console.log('in render forecasts function');
     return this.props.forecastData.map((data) => {
-      console.log('inside map function!');
+      // console.log('inside map function!');
       const {value, unit} = data.temperature;
       let date = this.getDate(data.from).split(',');
-      console.log('date from func', date);
+      // console.log('date from func', date);
       return (
         <DayForecast
           key={data.from}

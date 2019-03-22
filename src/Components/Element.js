@@ -5,7 +5,6 @@ const Element = (props) => {
     <span className="element">
       <span className="element-heading">
         {props.title}:
-        {/* {`${props.title}: `}  */}
       </span>
       <span className="element-details">
         {props.details}

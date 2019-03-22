@@ -7,9 +7,8 @@ const Spinner = (props) => {
       <FadeLoader
         sizeUnit={"px"}
         size={50}
-        color={'red'}
+        color={'#E60505'}
         loading={props.loading}
-        // style={{...props.style}}
       />
     </div>
   )

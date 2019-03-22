@@ -1,21 +1,14 @@
 import React, {Component} from 'react';
 import * as WeatherActions from '../Actions/WeatherActions';
 import {connect} from 'react-redux';
-// var convert = require('xml-js');
-// var parseString = require('xml2js').parseString;
 import Spinner from '../Components/Spinner';
 import {xmlToJson} from '../Functions/common';
-// import Elements from '../Components/Elements';
-// import WeatherImage from '../Components/WeatherImage';
-// import LocationDisplay from '../Components/LocationDisplay';
-// import Temperature from '../Components/Temperature';
 import LocationErrorModal from '../Components/LocationErrorModal';
 import CurrentWeather from '../Components/CurrentWeather';
 import ForecastCollection from '../Components/ForecastCollection';
-// import logo from '../../public/assets/cbc.png';
 
 const locationOptions = {
-  enableHighAccuracy: true,
+  // enableHighAccuracy: true,
   timeout: 10000,
 };
 
@@ -66,17 +59,13 @@ class Weather extends Component {
     //   .then((values) => {
     //     console.log('PROMISE.ALL VALUES!!!', values);
     //     this.setState({dataLoaded: true});
-    //   })
-    // this.fetchData('Weather');
-    // this.fetchData('Forecast');
+    //   });
     this.refreshData();
   }
 
   locationFailure = (error) => {
-  // locationFailure = ({message}) => {
     console.log('in failure function', error, error.message);
     this.setState({loading: false, locationError: error.code, showModal: true});
-    // this.setState({loading: false, locationError: message, showModal: true});
   }
 
   processResponse = async(response) => {
@@ -91,24 +80,17 @@ class Weather extends Component {
     if(this.state.unit !== unit){
       await this.setState({unit});
       this.refreshData();
-      // this.fetchData('Weather');
-      // this.fetchData('Forecast');
     }
   }
 
   fetchData = async(type) => {
-  // fetchData = async(lat, lon) => {
-    // console.log('in fetch data func', lat, lon);
-    // console.log('inside func', type);
     if(!this.state.locationError){
-      // console.log('inside condition', type);
       if(!this.state.loading){
         this.setState({loading: true});
       }
 
       const {latitude, longitude} = this.state;
       let key = type.toLowerCase();
-      // console.log('key!!!!!', key);
       try{
         // const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
         const url = `https://api.openweathermap.org/data/2.5/${key}?lat=${latitude}&lon=${longitude}&mode=${format}&APPID=${apiKey}&units=${this.state.unit}`;
@@ -117,17 +99,8 @@ class Weather extends Component {
         // console.log('resp from fetch Data', response.json());
         const xmlResp = await this.processResponse(response);
         console.log('xmlResp', xmlResp);
-        // var xmlText = new XMLSerializer().serializeToString(xmlResp);
-        // console.log('xmlText', xmlText);
         const jsonResp = xmlToJson(xmlResp);
-        // var result1 = convert.xml2json(xmlText, {compact: true, spaces: 4});
-        // console.log('result!!!!!!!', result1);
-        // parseString(xmlText, (err, res) => {
-        //   console.log('resp from parse string', res);
-        //   console.log('finalllll', JSON.stringify(res))
-        // });
         let data;
-        // = type === 'Weather' ? jsonResp.current : jsonResp.weatherdata.forecast;
         if(type === 'Weather'){
           data = jsonResp.current;
         }
@@ -144,14 +117,7 @@ class Weather extends Component {
         console.log('data', data);
         this.props.setWeatherData(type, data);
         this.setState({loading: false, [`${key}DataLoaded`]: true});
-        // this.setState({loading: false, dataLoaded: true});
         console.log('jsonResp', jsonResp);
-
-        // return fetch(url)
-        //   .then(response => response.text())
-        //   .then(str => (new DOMParser()).parseFromString(str, "application/xml"))
-        //   .then(data => console.log(data))
-        //   .catch(e=>console.log('error', e))
       }
       catch(e){
         console.log('error in fetching data', e);
@@ -181,16 +147,13 @@ class Weather extends Component {
 
         <Spinner
           loading={this.state.loading}
-          // style={{alignSelf: 'center'}}
         />
 
         {
           this.state.weatherDataLoaded &&
           <div className="refresh-container">
             <h2>
-            {/* <div className="location"> */}
               {`${this.props.city.name}, ${this.props.city.country}`}
-              {/* Your location: {`${this.props.city.name}, ${this.props.city.country}`} */}
             </h2>
 
             <button

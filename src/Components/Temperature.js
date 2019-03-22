@@ -8,15 +8,12 @@ const Temperature = (props) => {
       <span className="temp-main">
         {roundNum(props.temperature.value)} &deg;{props.unit}
       </span>
-      {/* <div> */}
-        <span className="temp max">
-          Max: {roundNum(props.temperature.max)} &deg;{props.unit}
-        </span>
-        <span className="temp min">
-          Min: {roundNum(props.temperature.min)} &deg;{props.unit}
-        </span>
-      {/* </div> */}
-      {/* {<div>{props.temperature.name}</div>} */}
+      <span className="temp max">
+        Max: {roundNum(props.temperature.max)} &deg;{props.unit}
+      </span>
+      <span className="temp min">
+        Min: {roundNum(props.temperature.min)} &deg;{props.unit}
+      </span>
     </div>
   )
 }

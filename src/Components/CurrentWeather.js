@@ -33,14 +33,6 @@ const CurrentWeather = (props) => {
           />
         </div>
         <div className="weather-right">
-          {/* <div className="weather-right-top">
-
-          </div>
-          <div className="weather-right-bottom">
-            <Elements
-
-            />
-          </div> */}
           <Temperature load={props.load}/>
           <Elements load={props.load}/>
         </div>

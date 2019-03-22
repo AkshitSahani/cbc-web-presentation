@@ -8,7 +8,6 @@ const ForecastReducer = (state = initialState, action) => {
     case 'setForecastData':
       console.log('inside forecast in reducer', data);
       return {...state, forecastData: [...data]};
-      // return {...state, forecastData: [...state.forecastData, ...data]};
     default:
     return state;
   }

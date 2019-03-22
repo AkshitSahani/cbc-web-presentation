@@ -23,10 +23,6 @@ export default connect(mapStateToProps)(Elements);
 const capitalize = (string) => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
 const localTime = (date) => (new Date(`${date}.000Z`)).toLocaleString('en-US', { hour: 'numeric', minute:'numeric', hour12: true });
-  // const date = new Date(`${date}.000Z`);
-  // const formattedTime = `${date.getHours()}:${date.getMinutes()}`;
-  // const date = (new Date(`${date}.000Z`)).toString()).split('GMT-0400').join(' ');
-// }
 
 const renderElements = (elements) => {
   // console.log('in renderElements func', elements);

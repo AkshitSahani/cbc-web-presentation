@@ -28,7 +28,7 @@ Please follow these steps to run this application on your local machine:
 
 \
 \
-\
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

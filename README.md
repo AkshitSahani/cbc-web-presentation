@@ -24,13 +24,13 @@ Please follow these steps to run this application on your local machine:
 
 - The last command (npm start) should automatically open http://localhost:3000/ in a browser. If it doesn't, simply navigate to http://localhost:3000/ in a browser
 
-- Last, but not the least, Enjoy the app!
+- Last, but not the least, Enjoy the app!\
 
 \
-\
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+\This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 

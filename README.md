@@ -4,7 +4,7 @@ Please follow these steps to run this application on your local machine:
 
 - you will receive a welcome email with detailed instructions on api key usage (check junk mail also)
 
-- NOTE: It can take a few hours for the api key to get activated. You will NOT be able to run this application successfully until that happens (you will keep getting 401 unauthorized errors)
+- NOTE: It can take up to a few hours for the api key to get activated. You will NOT be able to run this application successfully until that happens (you will keep getting 401 unauthorized errors)
 
 - clone this repo into a folder in your local machine (detailed instructions available at https://www.git-tower.com/learn/git/commands/git-clone)
 

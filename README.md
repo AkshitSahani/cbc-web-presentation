@@ -26,8 +26,7 @@ Please follow these steps to run this application on your local machine:
 
 - Last, but not the least, Enjoy the app!
 
-
-
+\\\
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

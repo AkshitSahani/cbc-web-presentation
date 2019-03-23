@@ -9,7 +9,9 @@ class ForecastCollection extends Component {
 
   renderForecasts = () => {
     // console.log('in render forecasts function');
-    return this.props.forecastData.map((data) => {
+    const {forecastData} = this.props;
+    var width = `${(100/forecastData.length)-1}%`;
+    return forecastData.map((data) => {
       // console.log('inside map function!');
       const {value, unit} = data.temperature;
       let date = this.getDate(data.from).split(',');
@@ -22,6 +24,7 @@ class ForecastCollection extends Component {
           name={data.symbol.name}
           temperature={roundNum(value/1)}
           unit={unit === 'imperial' ? 'F' : 'C'}
+          style={{width}}
         />
       )
     })

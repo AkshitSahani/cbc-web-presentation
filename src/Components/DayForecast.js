@@ -3,7 +3,10 @@ import WeatherImage from './WeatherImage';
 
 const DayForecast = (props) => {
   return (
-    <div className="forecast-single">
+    <div
+      className="forecast-single"
+      style={props.style}
+    >
       <div className="forecast-top">
         <span>
           {props.date[0]}

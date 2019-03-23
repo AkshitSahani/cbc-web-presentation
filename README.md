@@ -1,3 +1,33 @@
+Please follow these steps to run this application on your local machine:
+
+- visit https://openweathermap.org/appid and sign up to receive an API key (APPID)
+
+- you will receive a welcome email with detailed instructions on api key usage (check junk mail also)
+
+- NOTE: It can take a few hours for the api key to get activated. You will NOT be able to run this application successfully until that happens (you will keep getting 401 unauthorized errors)
+
+- clone this repo into a folder in your local machine (detailed instructions available at https://www.git-tower.com/learn/git/commands/git-clone)
+
+- navigate into application folder (cd cbc-web-presentation)
+
+- run npm install
+
+- create a new file in the project root folder (cbc-web-presentation) called '.env'
+
+- Paste the following line into the newly created .env file: REACT_APP_WEATHER_API_KEY = YOUR_API_KEY
+
+- Note that in the line above, 'YOUR_API_KEY' will be replaced by the api key you receive from open weather map on registration.  The api key MUST be active and should NOT be in quotes; you will paste it as is
+
+- save the .env file
+
+- run npm start
+
+- The last command (npm start) should automatically open http://localhost:3000/ in a browser. If it doesn't, simply navigate to http://localhost:3000/ in a browser
+
+- Last, but not the least, Enjoy the app!
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
